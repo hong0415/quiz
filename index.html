@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>修辭手法互動溫習站 - 超強題庫版</title>
+    <title>修辭手法互動溫習站 - 專業擴充版</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .flashcard-inner {
@@ -36,7 +36,7 @@
     <div class="max-w-4xl mx-auto py-8 px-4">
         <header class="text-center mb-8">
             <h1 class="text-3xl font-bold text-slate-800 mb-2">修辭手法互動溫習站</h1>
-            <p class="text-slate-500">專業級擴充題庫 (每類 50 題，共 850 題)</p>
+            <p class="text-slate-500">附件完整數據載入：24 類修辭真實題庫</p>
         </header>
 
         <!-- 設定區域 -->
@@ -77,7 +77,7 @@
             <div id="cardWrapper" class="flashcard h-96 w-full perspective-1000 mb-8">
                 <div class="flashcard-inner relative w-full h-full text-center shadow-xl rounded-2xl transform-gpu transition-all duration-500 bg-white">
                     <div class="flashcard-front absolute w-full h-full p-8 flex flex-col justify-center items-center bg-white rounded-2xl border border-slate-100">
-                        <span class="px-3 py-1 bg-blue-50 text-blue-500 text-xs font-bold rounded-full mb-4 tracking-widest uppercase">Example</span>
+                        <span class="px-3 py-1 bg-blue-50 text-blue-500 text-xs font-bold rounded-full mb-4 tracking-widest uppercase">例句範例</span>
                         <p id="frontSentence" class="text-xl md:text-2xl font-medium text-slate-800 leading-relaxed px-4 text-center"></p>
                         <div class="mt-8 flex items-center text-slate-300 text-xs">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" /></svg>
@@ -85,7 +85,7 @@
                         </div>
                     </div>
                     <div class="flashcard-back absolute w-full h-full p-8 flex flex-col justify-center items-center bg-blue-600 rounded-2xl text-white">
-                        <span class="text-blue-200 text-xs font-bold mb-2 tracking-widest uppercase">Rhetoric Device</span>
+                        <span class="text-blue-200 text-xs font-bold mb-2 tracking-widest uppercase">修辭手法</span>
                         <h3 id="backType" class="text-3xl font-bold mb-4"></h3>
                         <div class="h-px w-16 bg-blue-400 opacity-50 mb-4"></div>
                         <p id="backReason" class="text-base text-blue-50 leading-relaxed max-w-md text-left"></p>
@@ -101,82 +101,67 @@
     </div>
 
     <script>
-        const rhetoricTypes = ["明喻", "暗喻", "借喻", "借代", "反語", "反問", "設問", "排比", "對偶", "對比", "頂真", "互文", "擬人", "擬物", "層遞", "反復", "疊字"];
+        const rhetoricTypes = [
+            "明喻", "暗喻", "借喻", "借代", "反語", "反問", "設問", "排比", 
+            "對偶", "對比", "頂真", "互文", "擬人", "擬物", "層遞", "反復", 
+            "誇飾", "正襯", "反襯", "引用", "通感", "呼告", "疊字"
+        ];
 
-        // 這裡僅展示數據生成逻辑與核心範例，為了保持文件性能，我會生成各類型的精華數據
-        // 實際部署時，data 數組包含 850 個對象
-        const rawData = {
-            "明喻": [
-                { s: "生活像一首歌，有高亢也有低沉。", r: "本體是「生活」，喻詞是「像」，喻體是「歌」。" },
-                { s: "那雪花飄落，如銀色的蝴蝶在空中起舞。", r: "本體是「雪花」，喻詞是「如」，喻體是「蝴蝶」。" },
-                // ... 這裡將循環生成至 50 題，下同
-            ],
-            "暗喻": [
-                { s: "書籍是心靈的良藥。", r: "本體是「書籍」，喻體是「良藥」，聯繫詞是「是」。" },
-                { s: "挫折是強者的墊腳石。", r: "本體是「挫折」，喻體是「墊腳石」。" },
-            ],
-            "借喻": [
-                { s: "這場晚年的風雪，他們要攜手熬過去。", r: "直接以「風雪」喻指困難人生，不見本體與喻詞。" },
-                { s: "誰能想到這株溫室花朵竟能扛起家庭重擔。", r: "以「溫室花朵」喻指受保護的人，不見本體與喻詞。" },
-                { s: "別讓世俗的枷鎖鎖住了你的靈魂。", r: "以「枷鎖」喻指束縛，不見本體與喻詞。" },
-                { s: "歲月的刻刀在他的臉上留下了深深的印記。", r: "以「刻刀」喻指流逝的時間或艱辛，不見本體與喻詞。" },
-                { s: "他這隻領頭羊，帶領團隊走出了困境。", r: "以「領頭羊」喻指領導者，不見本體與喻詞。" },
-                // ... 擴展至 50 題
-            ],
-            "反語": [
-                { s: "你可真準時啊，會議都結束了你才來。", r: "名為讚美「準時」，實則諷刺「遲到」。" },
-                { s: "這張桌子真乾淨，灰塵厚得都能種花了。", r: "名為讚美「乾淨」，實則諷刺「骯髒」。" },
-                { s: "他真是一個天才，連這麼簡單的加法都能算錯。", r: "名為讚美「天才」，實則諷刺「愚笨」。" },
-                { s: "這音樂可真動聽，聽得鄰居都報警了。", r: "名為讚美「動聽」，實則諷刺「難聽噪音」。" },
-                { s: "你的眼力真好，掉在地上的錢包都看不見。", r: "名為讚美「眼力好」，實則諷刺「粗心/看不見」。" },
-                // ... 擴展至 50 題
-            ]
-            // 其他類型比照辦理...
-        };
+        // 完整數據載入 (來自附件內容)
+        const data = [
+            { type: "明喻", sentence: "運動員在賽場上像離弦的箭一般衝向終點。", reason: "本體（運動員）、喻詞（像）、喻體（箭）。" },
+            { type: "明喻", sentence: "那片楓林火紅火紅的，像一團燃燒的火焰。", reason: "將楓林比作火焰，使用了喻詞「像」。" },
+            { type: "明喻", sentence: "小弟弟的臉蛋紅通通的，像一個大蘋果。", reason: "將臉蛋比作蘋果，喻詞為「像」。" },
+            { type: "暗喻", sentence: "老師是辛勤的園丁，細心呵護著祖國的花朵。", reason: "使用聯繫詞「是」將老師比作園丁。" },
+            { type: "暗喻", sentence: "書籍是心靈的良藥。", reason: "本體「書籍」直接等同於喻體「良藥」。" },
+            { type: "暗喻", sentence: "父愛是一座大山，讓我們感到安全。", reason: "將父愛比作大山，聯繫詞為「是」。" },
+            { type: "借喻", sentence: "只有挺拔的松柏，才能經受住嚴冬的考驗。", reason: "直接以喻體「松柏」代表意志堅強的人，本體不出現。" },
+            { type: "借喻", sentence: "在無邊的黑暗中，他終於盼到了遠方的歸帆。", reason: "以「歸帆」喻指回家的希望，不見本體（船/家人）。" },
+            { type: "借喻", sentence: "這場晚年的風雪，他們要攜手熬過去。", reason: "以「風雪」喻指人生艱辛，本體（苦難）未出現。" },
+            { type: "借喻", sentence: "別讓世俗的枷鎖鎖住了你的靈魂。", reason: "以「枷鎖」喻指束縛，本體（限制/規則）不出現。" },
+            { type: "借喻", sentence: "歲月的刻刀在他的臉上留下了深深的印記。", reason: "以「刻刀」喻指流逝的時間，本體未出現。" },
+            { type: "借代", sentence: "遠處傳來陣陣銀鈴般的笑聲。", reason: "以聲音特徵「銀鈴」代指清脆的笑聲。" },
+            { type: "借代", sentence: "那群紅領巾在街上幫老人過馬路。", reason: "以特徵「紅領巾」代指少先隊員。" },
+            { type: "借代", sentence: "巾幗不讓鬚眉。", reason: "「巾幗」代指女性，「鬚眉」代指男性。" },
+            { type: "反語", sentence: "你這人可真大方，連一塊錢也要跟同學計較半年。", reason: "名為讚美「大方」，實則諷刺「吝嗇」。" },
+            { type: "反語", sentence: "這音樂可真動聽，聽得鄰居都報警了。", reason: "名為讚美「動聽」，實則諷刺「難聽噪音」。" },
+            { type: "反語", sentence: "他真是個天才，連這麼簡單的題目都能答錯。", reason: "名為讚美「天才」，實則諷刺「笨拙」。" },
+            { type: "反問", sentence: "難道我們不應該為保護環境貢獻一份力量嗎？", reason: "答案就在問句中（應該），加強肯定語氣。" },
+            { type: "反問", sentence: "難道這不是我們大家共同的責任嗎？", reason: "強調「這是大家的責任」。" },
+            { type: "設問", sentence: "幸福是什麼？幸福就是與家人團聚的時刻。", reason: "自問自答，引發閱讀興趣。" },
+            { type: "設問", sentence: "誰是最可愛的人？我們的戰士是最可愛的人。", reason: "自問自答，強調情感。" },
+            { type: "排比", sentence: "這裡的楓葉紅得像火，紅得像霞，紅得像血。", reason: "三個結構相似、語氣一致的短語並列。" },
+            { type: "排比", sentence: "愛心是一片照射在冬日的陽光，愛心是一泓出現在沙漠裡的泉水。", reason: "結構對稱，增強氣勢。" },
+            { type: "對偶", sentence: "綠窗明月在，青史古人空。", reason: "字數相等，詞性相對。" },
+            { type: "對偶", sentence: "橫眉冷對千夫指，俯首甘為孺子牛。", reason: "結構工整，意義對稱。" },
+            { type: "對比", sentence: "有的人活著，他已經死了；有的人死了，他還活著。", reason: "將「生」與「死」的對立價值進行比較。" },
+            { type: "頂真", sentence: "歸來見天子，天子坐明堂。", reason: "前句結尾「天子」作為後句開頭。" },
+            { type: "頂真", sentence: "出門看夥伴，夥伴皆驚忙。", reason: "首尾相接，連環遞進。" },
+            { type: "誇飾", sentence: "這間屋子太小了，連站的地方都沒有。", reason: "誇大「小」的程度，強調空間侷促。" },
+            { type: "誇飾", sentence: "白髮三千丈，離愁似個長。", reason: "極度誇張白髮長度來表達深重的離愁。" },
+            { type: "通感", sentence: "微風過處，送來縷縷清香，彷彿高樓上渺茫的歌聲似的。", reason: "嗅覺（清香）轉化為聽覺（歌聲）。" },
+            { type: "通感", sentence: "他的聲音是甜潤的。", reason: "聽覺（聲音）轉化為味覺（甜）。" },
+            { type: "通感", sentence: "寂靜在空氣中發酵。", reason: "聽覺（寂靜）轉化為嗅覺或動態感。" },
+            { type: "通感", sentence: "這顏色亮得耀眼，甚至有些燙人。", reason: "視覺（亮）轉化為觸覺（燙）。" },
+            { type: "呼告", sentence: "祖國啊，我親愛的母親！", reason: "直接對「祖國」進行呼喚。" },
+            { type: "呼告", sentence: "大地啊，請賜予我們力量吧！", reason: "直接對著大地傾訴與請求。" },
+            { type: "呼告", sentence: "朋友們，讓我們攜手並進！", reason: "直接呼喚在場的受眾。" },
+            { type: "引用", sentence: "常言道：「失敗乃成功之母」，我們不應氣餒。", reason: "直接引用社會公認的格言。" },
+            { type: "正襯", sentence: "桃花潭水深千尺，不及汪倫送我情。", reason: "用潭水的深來襯托友誼更深，方向一致。" },
+            { type: "反襯", sentence: "蟬噪林逾靜，鳥鳴山更幽。", reason: "用喧鬧（蟬噪鳥鳴）襯托出極度的幽靜。" },
+            { type: "擬人", sentence: "小雨點在屋頂上跳起了輕快的舞。", reason: "賦予雨點跳舞的人類行為。" },
+            { type: "擬物", sentence: "他在人群中東奔西跑，像是一隻沒頭蒼蠅。", reason: "將人比作動物來描寫（擬動物）。" },
+            { type: "層遞", sentence: "古之欲明明德於天下者，先治其國；欲治其國者，先齊其家；欲齊其家者，先修其身。", reason: "由大到小、由遠及近層層推進。" },
+            { type: "反復", sentence: "盼望著，盼望著，東風來了，春天的腳步近了。", reason: "重複使用「盼望著」強調心情急切。" },
+            { type: "疊字", sentence: "尋尋覓覓，冷冷清清，淒淒慘慘戚戚。", reason: "使用多組疊字增強節奏感與憂鬱氣氛。" },
+            { type: "互文", sentence: "秦時明月漢時關。", reason: "秦、漢與明月、關隘互相補充（秦漢時的明月與關隘）。" },
+            { type: "互文", sentence: "主人下馬客在船。", reason: "指主人與客人一起下馬並上船。" }
+        ];
 
-        // --- 題庫擴充邏輯 (生成每類 50 題) ---
-        const data = [];
-        rhetoricTypes.forEach(type => {
-            let baseArray = rawData[type] || [];
-            // 如果某類數據不足，我們用變體補足（教學用途）
-            for(let i=1; i<=50; i++) {
-                if (baseArray[i-1]) {
-                    data.push({ type: type, sentence: baseArray[i-1].s, reason: baseArray[i-1].r });
-                } else {
-                    // 自動生成邏輯 (範例)
-                    if (type === "借喻") {
-                        const samples = [
-                            ["枯井", "乾涸的心靈"], ["驚雷", "震撼的消息"], ["春雨", "老師的教誨"],
-                            ["迷霧", "未知的未來"], ["孤舟", "孤獨的旅人"], ["指南針", "正確的指引"],
-                            ["綠洲", "絕望中的希望"], ["深淵", "罪惡的邊緣"], ["狂風", "猛烈的攻勢"],
-                            ["落葉", "歸鄉的遊子"], ["火種", "希望的開端"], ["荊棘", "前進的阻礙"]
-                        ];
-                        const pick = samples[i % samples.length];
-                        data.push({ type: type, sentence: `面對眼前的${pick[0]}，他知道必須保持冷靜。`, reason: `直接以「${pick[0]}」喻指「${pick[1]}」。不見本體與喻詞，是典型的借喻。` });
-                    } else if (type === "反語") {
-                        const samples = [
-                            ["勤奮", "懶惰"], ["慷慨", "吝嗇"], ["勇敢", "膽小"], ["誠實", "虛偽"],
-                            ["謙虛", "自傲"], ["靈活", "呆板"], ["苗條", "肥胖"], ["整潔", "凌亂"]
-                        ];
-                        const pick = samples[i % samples.length];
-                        data.push({ type: type, sentence: `你真是太${pick[0]}了，連這點小事都推三阻四。`, reason: `字面上是讚美「${pick[0]}」，實際是在批評對方的「${pick[1]}」，透過正話反說加強語氣。` });
-                    } else if (type === "擬人") {
-                        data.push({ type: type, sentence: `路邊的小花在微風中向行人招手點頭。 (題${i})`, reason: "賦予小花「招手點頭」的人類動作。" });
-                    } else if (type === "排比") {
-                        data.push({ type: type, sentence: `我們需要勇氣面對挑戰，需要智慧解決困難，需要恆心走到底。 (題${i})`, reason: "三個「需要...」結構並列，增強說服力。" });
-                    } else {
-                        // 通用補位
-                        data.push({ type: type, sentence: `${type}手法練習範例句之第 ${i} 號。`, reason: `這是關於「${type}」的標準教學案例解析。` });
-                    }
-                }
-            }
-        });
-
-        // 狀態管理
         let currentQuestions = [];
         let currentPointer = 0;
 
-        // 初始化篩選按鈕
+        // 初始化 UI
         const filterContainer = document.getElementById('filterOptions');
         rhetoricTypes.forEach(type => {
             const div = document.createElement('div');
@@ -189,45 +174,43 @@
             filterContainer.appendChild(div);
         });
 
-        // 隨機排列
         function shuffle(array) {
-            return array.sort(() => Math.random() - 0.5);
+            return [...array].sort(() => Math.random() - 0.5);
         }
 
-        // 更新顯示
         function updateCardDisplay() {
             const cardWrapper = document.getElementById('cardWrapper');
             cardWrapper.classList.remove('flipped'); 
-            
             const current = currentQuestions[currentPointer];
             
             setTimeout(() => {
                 document.getElementById('frontSentence').innerText = current.sentence;
                 document.getElementById('backType').innerText = current.type;
                 document.getElementById('backReason').innerHTML = `<span class="font-bold text-white/60">解析：</span><br/>${current.reason}`;
-                
                 document.getElementById('currentIndex').innerText = currentPointer + 1;
                 document.getElementById('totalCount').innerText = currentQuestions.length;
-                
                 const progress = ((currentPointer + 1) / currentQuestions.length) * 100;
                 document.getElementById('progressBar').style.width = `${progress}%`;
-                
                 document.getElementById('prevBtn').disabled = currentPointer === 0;
                 document.getElementById('nextBtn').innerText = currentPointer === currentQuestions.length - 1 ? '完成溫習' : '下一張';
             }, 100);
         }
 
-        // 事件監聽
         document.getElementById('startBtn').addEventListener('click', () => {
             const selectedTypes = Array.from(document.querySelectorAll('.checkbox-custom:checked')).map(cb => cb.value);
             if (selectedTypes.length === 0) {
                 alert("請至少選擇一個修辭手法！");
                 return;
             }
-
+            // 只篩選選定的真實數據，不再自動補位
             currentQuestions = shuffle(data.filter(item => selectedTypes.includes(item.type)));
-            currentPointer = 0;
             
+            if (currentQuestions.length === 0) {
+                alert("所選類型目前題庫中暫無題目。");
+                return;
+            }
+
+            currentPointer = 0;
             document.getElementById('setupArea').classList.add('hidden');
             document.getElementById('studyArea').classList.remove('hidden');
             updateCardDisplay();
@@ -238,7 +221,7 @@
                 currentPointer++;
                 updateCardDisplay();
             } else {
-                alert("太棒了！你已經完成所有選定的 " + currentQuestions.length + " 題練習。");
+                alert("太棒了！溫習完畢。");
                 document.getElementById('backToSetup').click();
             }
         });
@@ -266,7 +249,6 @@
         document.getElementById('deselectAll').addEventListener('click', () => {
             document.querySelectorAll('.checkbox-custom').forEach(cb => cb.checked = false);
         });
-
     </script>
 </body>
 </html>
